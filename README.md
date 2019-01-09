@@ -36,7 +36,8 @@ Installation
 1. npm install -g yarnpkg
 2. npm install -g typescript@latest
 3. delete node_modules(option)
-4. npm cache clean --force
-5. npm install typescript@latest
-6. yarn
-7. npm start
+4. delete package-lock.json
+5. npm cache clean --force
+6. npm install typescript@latest
+7. yarn
+8. npm start
