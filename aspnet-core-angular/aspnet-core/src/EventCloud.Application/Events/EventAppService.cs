@@ -12,6 +12,9 @@ using Abp.UI;
 using EventCloud.Authorization.Users;
 using EventCloud.Events.Dtos;
 using Microsoft.EntityFrameworkCore;
+using IExtensionRepository = EventCloud.Repository.IEventRepository;
+using ExtEvent = EventCloud.Repository.Entity.Event;
+using MongoDB.Bson;
 
 namespace EventCloud.Events
 {
@@ -20,13 +23,16 @@ namespace EventCloud.Events
     {
         private readonly IEventManager _eventManager;
         private readonly IRepository<Event, Guid> _eventRepository;
+        private readonly IExtensionRepository _extension;
 
         public EventAppService(
             IEventManager eventManager,
-            IRepository<Event, Guid> eventRepository)
+            IRepository<Event, Guid> eventRepository,
+            IExtensionRepository extension)
         {
             _eventManager = eventManager;
             _eventRepository = eventRepository;
+            _extension = extension;
         }
 
         public async Task<ListResultDto<EventListDto>> GetListAsync(GetEventListInput input)
@@ -39,7 +45,23 @@ namespace EventCloud.Events
                 .Take(64)
                 .ToListAsync();
 
-            return new ListResultDto<EventListDto>(events.MapTo<List<EventListDto>>());
+            var ext = await _extension.GetByAsync();
+
+            // TODO: Merge
+            var dtos = events.MapTo<List<EventListDto>>();
+            //var dtos = (from e in events
+            //            select new
+            //            {
+            //                e.Title,
+            //                e.Description,
+            //                e.Date,
+            //                e.IsCancelled,
+            //                e.MaxRegistrationCount,
+            //                e.Registrations
+            //            }).ToList().MapTo<List<EventListDto>>();
+            //var dtos = (from e in events select e).ToList().MapTo<List<EventListDto>>();
+
+            return new ListResultDto<EventListDto>(dtos);
         }
 
         public async Task<EventDetailOutput> GetDetailAsync(EntityDto<Guid> input)
@@ -62,7 +84,13 @@ namespace EventCloud.Events
         public async Task CreateAsync(CreateEventInput input)
         {
             var @event = Event.Create(AbpSession.GetTenantId(), input.Title, input.Date, input.Description, input.MaxRegistrationCount);
+
             await _eventManager.CreateAsync(@event);
+
+            // TODO: Apply AOP -> all extension out of this app service class
+            // TODO: Put conversion Guid <-> ObjectId in helper class
+            ObjectId.TryParse(@event.Id.ToString(), out ObjectId externalId);
+            await _extension.SaveAsync(new ExtEvent { ExternalId = externalId });
         }
 
         public async Task CancelAsync(EntityDto<Guid> input)

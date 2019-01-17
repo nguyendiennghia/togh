@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,7 @@ using Abp.Extensions;
 using EventCloud.Authentication.JwtBearer;
 using EventCloud.Configuration;
 using EventCloud.Identity;
+using EventCloud.Repository;
 
 #if FEATURE_SIGNALR
 using Microsoft.AspNet.SignalR;
@@ -44,6 +46,15 @@ namespace EventCloud.Web.Host.Startup
             services.AddMvc(
                 options => options.Filters.Add(new CorsAuthorizationFilterFactory(_defaultCorsPolicyName))
             );
+
+            // MongoDB
+            services.Configure<Settings>(options =>
+            {
+                options.ConnectionString
+                    = _appConfiguration.GetSection("MongoConnection:ConnectionString").Value;
+                options.Database
+                    = _appConfiguration.GetSection("MongoConnection:Database").Value;
+            });
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);

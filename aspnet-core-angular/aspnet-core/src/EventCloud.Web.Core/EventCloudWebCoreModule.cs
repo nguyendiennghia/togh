@@ -11,6 +11,7 @@ using Abp.Zero.Configuration;
 using EventCloud.Authentication.JwtBearer;
 using EventCloud.Configuration;
 using EventCloud.EntityFrameworkCore;
+using System.Reflection;
 
 #if FEATURE_SIGNALR
 using Abp.Web.SignalR;
@@ -72,6 +73,7 @@ namespace EventCloud
 
         public override void Initialize()
         {
+            
             IocManager.RegisterAssemblyByConvention(typeof(EventCloudWebCoreModule).GetAssembly());
         }
     }

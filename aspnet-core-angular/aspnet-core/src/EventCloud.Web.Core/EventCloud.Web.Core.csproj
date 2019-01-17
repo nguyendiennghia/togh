@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EventCloud.Application\EventCloud.Application.csproj" />
     <ProjectReference Include="..\EventCloud.EntityFrameworkCore\EventCloud.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\EventCloud.Repository\EventCloud.Repository.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
