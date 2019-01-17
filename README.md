@@ -31,3 +31,13 @@ http://www.codeproject.com/Articles/1043326/A-Multi-Tenant-SaaS-Application-With
 
 ##### ASP.NET Core, Angular and EntityFrameworkCore version
 https://www.codeproject.com/Articles/1231118/A-Multi-Tenant-SaaS-Application-With-ASP-NET-Core
+
+Installation
+1. npm install -g yarnpkg
+2. npm install -g typescript@latest
+3. delete node_modules(option)
+4. delete package-lock.json
+5. npm cache clean --force
+6. npm install typescript@latest
+7. yarn
+8. npm start
