@@ -35,23 +35,30 @@ namespace EventCloud.Repository
 
         public async Task<IList<Event>> GetByAsync()
         {
-            //return await Throws<IList<Event>>(new NotImplementedException());
             return await _context.Events.Find(_ => true).ToListAsync();
         }
 
+        /// <summary>
+        /// Internal purpose only
+        /// </summary>
         public async Task<Event> GetByAsync(string id)
         {
-            //return await Throws<Event>(new NotImplementedException());
             var internalId = GetInternalId(id);
             return await _context.Events
-                            .Find(e => e.Id == id || e.InternalId == internalId)
+                            .Find(e => e.InternalId == internalId)
                             .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Should be in use officially
+        /// </summary>
+        public async Task<IList<Event>> GetByAsync(Guid eventId)
+        {
+            return await _context.Events.Find(e => e.ExternalId == eventId).ToListAsync();
         }
 
         public async Task<bool> SaveAsync(Event @event)
         {
-            //return await Throws<bool>(new NotImplementedException());
-
             if (@event.InternalId == ObjectId.Empty)
             {
                 @event.CreatedAt = @event.UpdatedAt = DateTime.Now;
@@ -59,7 +66,7 @@ namespace EventCloud.Repository
                 return true;
             }
 
-            var filter = Builders<Event>.Filter.Eq(s => s.Id, @event.Id);
+            var filter = Builders<Event>.Filter.Eq(s => s.InternalId, @event.InternalId);
             var update = Builders<Event>.Update
                             .Set(e => e.Availabilities, @event.Availabilities)
                             .Set(e => e.Category, @event.Category)
@@ -69,12 +76,7 @@ namespace EventCloud.Repository
             return result.IsAcknowledged && result.ModifiedCount > 0; 
         }
 
-        private ObjectId GetInternalId(string id)
-        {
-            if (!ObjectId.TryParse(id, out ObjectId internalId))
-                internalId = ObjectId.Empty;
-
-            return internalId;
-        }
+        private static ObjectId GetInternalId(string id)
+            => !ObjectId.TryParse(id, out ObjectId internalId) ? ObjectId.Empty : internalId;
     }
 }

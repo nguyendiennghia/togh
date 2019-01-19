@@ -89,8 +89,8 @@ namespace EventCloud.Events
 
             // TODO: Apply AOP -> all extension out of this app service class
             // TODO: Put conversion Guid <-> ObjectId in helper class
-            ObjectId.TryParse(@event.Id.ToString(), out ObjectId externalId);
-            await _extension.SaveAsync(new ExtEvent { ExternalId = externalId });
+            //ObjectId.TryParse(@event.Id.ToString(), out ObjectId externalId);
+            await _extension.SaveAsync(new ExtEvent { ExternalId = @event.Id });
         }
 
         public async Task CancelAsync(EntityDto<Guid> input)

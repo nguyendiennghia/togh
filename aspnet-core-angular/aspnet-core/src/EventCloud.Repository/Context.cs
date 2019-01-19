@@ -1,5 +1,7 @@
 ﻿using EventCloud.Repository.Entity;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -19,17 +21,31 @@ namespace EventCloud.Repository
 
         public Context(IOptions<Settings> settings)
         {
-            var client = new MongoClient(settings.Value.ConnectionString);
+            // Tons of shit 'cause too lazy to register with Abp dependence
+            IMongoClient client = new MongoClient(settings.Value.ConnectionString);
             if (client != null)
                 _database = client.GetDatabase(settings.Value.Database);
+
+            //var convention = new ConventionPack
+            //{
+            //    new MemberSerializationOptionsConvention(
+            //        typeof (Guid),
+            //        new RepresentationSerializationOptions(BsonType.String)
+            //)
+            //};
+
+            //ConventionRegistry.Register("xxx", convention, t => true);
+
+            //BsonClassMap.RegisterClassMap<Event>(cm =>
+            //{
+            //    cm.AutoMap();
+            //    cm.MapMember(x => x.CreatedAt).SetDefaultValue(() => DateTime.Now);
+            //    cm.MapMember(x => x.UpdatedAt).SetDefaultValue(() => DateTime.Now);
+            ////    cm.ConventionPack.SetSerializationOptionsConvention
+            //});
         }
 
         public IMongoCollection<Event> Events
-        {
-            get
-            {
-                return _database.GetCollection<Event>("event");
-            }
-        }
+            =>_database.GetCollection<Event>("event");
     }
 }

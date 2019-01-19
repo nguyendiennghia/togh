@@ -12,6 +12,7 @@ namespace EventCloud.Repository
     {
         Task<IList<Event>> GetByAsync();
         Task<Event> GetByAsync(string id);
+        Task<IList<Event>> GetByAsync(Guid eventId);
 
         Task<bool> SaveAsync(Event @event);
 
