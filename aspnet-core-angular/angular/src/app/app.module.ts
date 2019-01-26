@@ -35,6 +35,7 @@ import { MaterialInput } from '@shared/directives/material-input.directive';
 import { EventsComponent } from '@app/events/events.component';
 import { CreateEventComponent } from './events/create-event/create-event.component';
 import { EventDetailComponent } from './events/event-detail/event-detail.component';
+import { AutocompleteComponent } from './google-places/google-places.module';
 
 @NgModule({
     declarations: [
@@ -58,7 +59,8 @@ import { EventDetailComponent } from './events/event-detail/event-detail.compone
         RightSideBarComponent,
         EventsComponent,
         CreateEventComponent,
-        EventDetailComponent
+        EventDetailComponent,
+        AutocompleteComponent
     ],
     imports: [
         CommonModule,

@@ -14,6 +14,7 @@ using EventCloud.Events.Dtos;
 using Microsoft.EntityFrameworkCore;
 using IExtensionRepository = EventCloud.Repository.IEventRepository;
 using ExtEvent = EventCloud.Repository.Entity.Event;
+using ExtLocation = EventCloud.Repository.Entity.Location;
 using MongoDB.Bson;
 
 namespace EventCloud.Events
@@ -90,7 +91,12 @@ namespace EventCloud.Events
             // TODO: Apply AOP -> all extension out of this app service class
             // TODO: Put conversion Guid <-> ObjectId in helper class
             //ObjectId.TryParse(@event.Id.ToString(), out ObjectId externalId);
-            await _extension.SaveAsync(new ExtEvent { ExternalId = @event.Id });
+            await _extension.SaveAsync(new ExtEvent
+            {
+                ExternalId = @event.Id,
+                // TODO: Smash it to sucking automapper pls
+                Location = new ExtLocation { Latitude = input.Location.Latitude, Longtitude = input.Location.Longitude, RawAddress = input.Location.Address }
+            });
         }
 
         public async Task CancelAsync(EntityDto<Guid> input)

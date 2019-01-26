@@ -23,6 +23,11 @@ import * as moment from 'moment';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
+export enum EventGeoComponent {
+    Longitude = 0,
+    Latitude = 1
+  };
+
 @Injectable()
 export class AccountServiceProxy {
     private http: Http;
@@ -311,8 +316,14 @@ export class EventServiceProxy {
     createAsync(input: CreateEventInput): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Event/CreateAsync";
         url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(input);
+        let toJson = input.toJSON();
+        toJson.location = {
+            latitude: input.location.latitude,
+            longitude: input.location.longitude,
+            address: input.location.address,
+            postCode: input.location.postCode
+        };
+        const content_ = JSON.stringify(toJson);
 
         let options_ : any = {
             body: content_,
@@ -2612,6 +2623,7 @@ export class CreateEventInput implements ICreateEventInput {
     description: string;
     date: moment.Moment;
     maxRegistrationCount: number;
+    location: IEventLocation;
 
     constructor(data?: ICreateEventInput) {
         if (data) {
@@ -2659,6 +2671,19 @@ export interface ICreateEventInput {
     description: string;
     date: moment.Moment;
     maxRegistrationCount: number;
+    location: IEventLocation;
+}
+
+export interface IEventLocation {
+    longitude: number;
+    latitude: number;
+    address: string;
+    postCode: string;
+}
+
+export class EventLocation implements IEventLocation {
+    constructor(public longitude: number, public latitude: number, public postCode: string, public address: string) {
+    }
 }
 
 export class EntityDtoOfGuid implements IEntityDtoOfGuid {
