@@ -21,5 +21,7 @@ namespace EventCloud.Events.Dtos
         public int RegistrationsCount { get; set; }
 
         public ICollection<EventRegistrationDto> Registrations { get; set; }
+
+        public CreateEventLocation Location { get; set; }
     }
 }

@@ -20,6 +20,9 @@
                 <div>
                     {{event.description}}
                 </div>
+
+                <gmap [location]="event.location"></gmap>
+
                 <h5>
                     {{l("XregisteredOfYAvailableRegistration", event.registrationsCount, event.maxRegistrationCount)}}
                 </h5>

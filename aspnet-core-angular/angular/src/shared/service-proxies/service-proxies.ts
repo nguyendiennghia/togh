@@ -2462,6 +2462,7 @@ export class EventDetailOutput implements IEventDetailOutput {
     creationTime: moment.Moment;
     creatorUserId: number;
     id: string;
+    location: EventLocation;
 
     constructor(data?: IEventDetailOutput) {
         if (data) {
@@ -2493,6 +2494,7 @@ export class EventDetailOutput implements IEventDetailOutput {
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             this.creatorUserId = data["creatorUserId"];
             this.id = data["id"];
+            this.location = EventLocation.from(data["location"]);
         }
     }
 
@@ -2550,6 +2552,8 @@ export interface IEventDetailOutput {
     creationTime: moment.Moment;
     creatorUserId: number;
     id: string;
+
+    location: EventLocation;
 }
 
 export class EventRegistrationDto implements IEventRegistrationDto {
@@ -2683,6 +2687,9 @@ export interface IEventLocation {
 
 export class EventLocation implements IEventLocation {
     constructor(public longitude: number, public latitude: number, public postCode: string, public address: string) {
+    }
+    static from(data: any): IEventLocation {
+        return new EventLocation(data.longitude, data.latitude, data.postCode, data.address);
     }
 }
 

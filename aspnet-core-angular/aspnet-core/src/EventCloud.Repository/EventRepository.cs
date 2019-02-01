@@ -52,9 +52,9 @@ namespace EventCloud.Repository
         /// <summary>
         /// Should be in use officially
         /// </summary>
-        public async Task<IList<Event>> GetByAsync(Guid eventId)
+        public async Task<Event> GetByAsync(Guid eventId)
         {
-            return await _context.Events.Find(e => e.ExternalId == eventId).ToListAsync();
+            return await _context.Events.Find(e => e.ExternalId == eventId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> SaveAsync(Event @event)

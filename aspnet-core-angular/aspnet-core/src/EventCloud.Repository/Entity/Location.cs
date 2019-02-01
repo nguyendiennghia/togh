@@ -13,7 +13,7 @@ namespace EventCloud.Repository.Entity
         public virtual string RawAddress { get; set; }
 
         [BsonElement("lng")]
-        public double Longtitude { get; set; }
+        public double Longitude { get; set; }
 
         [BsonElement("lat")]
         public double Latitude { get; set; }

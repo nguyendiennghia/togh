@@ -36,6 +36,8 @@ import { EventsComponent } from '@app/events/events.component';
 import { CreateEventComponent } from './events/create-event/create-event.component';
 import { EventDetailComponent } from './events/event-detail/event-detail.component';
 import { AutocompleteComponent } from './google-places/google-places.module';
+import { AgmCoreModule } from '@agm/core';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
     declarations: [
@@ -60,7 +62,8 @@ import { AutocompleteComponent } from './google-places/google-places.module';
         EventsComponent,
         CreateEventComponent,
         EventDetailComponent,
-        AutocompleteComponent
+        AutocompleteComponent,
+        MapComponent
     ],
     imports: [
         CommonModule,
@@ -72,7 +75,10 @@ import { AutocompleteComponent } from './google-places/google-places.module';
         AppRoutingModule,
         ServiceProxyModule,
         SharedModule,
-        NgxPaginationModule
+        NgxPaginationModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyAuttoKc6zOBy-pt7xhl0rGWu5vh6PkD9Y'
+          })
     ],
     providers: [
 

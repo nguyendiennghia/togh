@@ -3,6 +3,8 @@ using Abp.Dependency;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using EventCloud.Authorization;
+using EventCloud.Events.Dtos;
+using EventCloud.Repository.Entity;
 using System.Reflection;
 
 namespace EventCloud
@@ -15,6 +17,13 @@ namespace EventCloud
         public override void PreInitialize()
         {
             Configuration.Authorization.Providers.Add<EventCloudAuthorizationProvider>();
+
+            Configuration.Modules.AbpAutoMapper().Configurators.Add(cfg =>
+            {
+                cfg.CreateMap<Location, CreateEventLocation>()
+                      .ForMember(evt => evt.Address, opt => opt.MapFrom(src => src.RawAddress))
+                      .ForMember(evt => evt.PostCode, opt => opt.Ignore());
+            });
         }
 
         public override void Initialize()

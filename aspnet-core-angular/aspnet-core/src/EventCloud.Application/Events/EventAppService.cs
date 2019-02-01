@@ -79,7 +79,10 @@ namespace EventCloud.Events
                 throw new UserFriendlyException("Could not found the event, maybe it's deleted.");
             }
 
-            return @event.MapTo<EventDetailOutput>();
+            var output = @event.MapTo<EventDetailOutput>();
+            var details = await _extension.GetByAsync(@event.Id);
+            output.Location = details.Location.MapTo<CreateEventLocation>();
+            return output;
         }
 
         public async Task CreateAsync(CreateEventInput input)
@@ -95,7 +98,7 @@ namespace EventCloud.Events
             {
                 ExternalId = @event.Id,
                 // TODO: Smash it to sucking automapper pls
-                Location = new ExtLocation { Latitude = input.Location.Latitude, Longtitude = input.Location.Longitude, RawAddress = input.Location.Address }
+                Location = new ExtLocation { Latitude = input.Location.Latitude, Longitude = input.Location.Longitude, RawAddress = input.Location.Address }
             });
         }
 

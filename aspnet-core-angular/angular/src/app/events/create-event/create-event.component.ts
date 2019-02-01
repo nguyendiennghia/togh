@@ -79,13 +79,12 @@ export class CreateEventComponent extends AppComponentBase {
         this.callGeoAPI();
     }
 
-    callGeoAPI(){debugger;
+    callGeoAPI(){
         let apiURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.code}&key=AIzaSyAgDUII_kvGfCJNmu4qhhzjl8YNzblV9Ng`;
         //let apiURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${this.code}&key=AIzaSyAuttoKc6zOBy-pt7xhl0rGWu5vh6PkD9Y`;
         //let apiURL = `http://localhost:4200`;
         return this.http.get(apiURL)
         .map((res: Response) => {
-            debugger;
             return res.json().results;
         })
         .subscribe(
@@ -113,7 +112,6 @@ export class CreateEventComponent extends AppComponentBase {
       }
     
       getEstablishmentAddress(place: object) {
-        debugger;
         this.postCode = this.getPostCode(place);
         this.address = this.establishmentAddress = place['formatted_address'];
         this.longitude = this.getGeoComponent(place, EventGeoComponent.Longitude);
