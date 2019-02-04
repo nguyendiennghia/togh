@@ -9,6 +9,7 @@ import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from "app/roles/roles.component";
 import { EventsComponent } from "app/events/events.component";
 import { EventDetailComponent } from "app/events/event-detail/event-detail.component";
+import { SearchEventComponent } from 'app/events/search-event/search-event.component';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { EventDetailComponent } from "app/events/event-detail/event-detail.compo
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'events', component: EventsComponent, data: { permission: 'Pages.Events' }, canActivate: [AppRouteGuard] },
+                    { path: 'events/search', component: SearchEventComponent, data: { permission: 'Pages.Events' }, canActivate: [AppRouteGuard] },
                     { path: 'events/:eventId', component: EventDetailComponent },
                     { path: 'about', component: AboutComponent }
                 ]

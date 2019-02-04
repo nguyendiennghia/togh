@@ -38,6 +38,7 @@ import { EventDetailComponent } from './events/event-detail/event-detail.compone
 import { AutocompleteComponent } from './google-places/google-places.module';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './map/map.component';
+import { SearchEventComponent } from './events/search-event/search-event.component';
 
 @NgModule({
     declarations: [
@@ -63,7 +64,8 @@ import { MapComponent } from './map/map.component';
         CreateEventComponent,
         EventDetailComponent,
         AutocompleteComponent,
-        MapComponent
+        MapComponent,
+        SearchEventComponent
     ],
     imports: [
         CommonModule,

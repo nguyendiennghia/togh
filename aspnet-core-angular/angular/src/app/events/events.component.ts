@@ -4,13 +4,7 @@ import { EventServiceProxy, EventListDto, ListResultDtoOfEventListDto, EntityDto
 import { PagedListingComponentBase, PagedRequestDto } from "shared/paged-listing-component-base";
 import { CreateEventComponent } from "app/events/create-event/create-event.component";
 
-@Component({
-    templateUrl: './events.component.html',
-    animations: [appModuleAnimation()]
-})
-export class EventsComponent extends PagedListingComponentBase<EventListDto> {
-
-    @ViewChild('createEventModal') createEventModal: CreateEventComponent;
+export abstract class EventsComponentBase extends PagedListingComponentBase<EventListDto> {
 
     active: boolean = false;
     events: EventListDto[] = [];
@@ -18,7 +12,7 @@ export class EventsComponent extends PagedListingComponentBase<EventListDto> {
 
     constructor(
         injector: Injector,
-        private _eventService: EventServiceProxy
+        protected _eventService: EventServiceProxy
     ) {
         super(injector);
     }
@@ -26,6 +20,34 @@ export class EventsComponent extends PagedListingComponentBase<EventListDto> {
     protected list(request: PagedRequestDto, pageNumber: number, finishedCallback: Function): void {
         this.loadEvent();
         finishedCallback();
+    }
+
+    protected abstract delete(event: EntityDtoOfGuid): void;
+
+    abstract createEvent(): void;
+
+    loadEvent() {
+        this._eventService.getListAsync(this.includeCanceledEvents)
+            .subscribe((result: ListResultDtoOfEventListDto) => {
+                this.events = result.items;
+            });
+    }
+}
+
+@Component({
+    templateUrl: './events.component.html',
+    animations: [appModuleAnimation()]
+})
+//export class EventsComponent extends PagedListingComponentBase<EventListDto> {
+export class EventsComponent extends EventsComponentBase {
+
+    @ViewChild('createEventModal') createEventModal: CreateEventComponent;
+
+    constructor(
+        injector: Injector,
+        _eventService: EventServiceProxy
+    ) {
+        super(injector, _eventService);
     }
 
     protected delete(event: EntityDtoOfGuid): void {
@@ -51,11 +73,6 @@ export class EventsComponent extends PagedListingComponentBase<EventListDto> {
     createEvent(): void {
         this.createEventModal.show();
     }
-
-    loadEvent() {
-        this._eventService.getListAsync(this.includeCanceledEvents)
-            .subscribe((result: ListResultDtoOfEventListDto) => {
-                this.events = result.items;
-            });
-    }
 }
+
+
