@@ -39,6 +39,7 @@ import { AutocompleteComponent } from './google-places/google-places.module';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './map/map.component';
 import { SearchEventComponent } from './events/search-event/search-event.component';
+import { EventTileComponent } from './events/event-tile/event-tile.component';
 
 @NgModule({
     declarations: [
@@ -65,7 +66,8 @@ import { SearchEventComponent } from './events/search-event/search-event.compone
         EventDetailComponent,
         AutocompleteComponent,
         MapComponent,
-        SearchEventComponent
+        SearchEventComponent,
+        EventTileComponent
     ],
     imports: [
         CommonModule,
