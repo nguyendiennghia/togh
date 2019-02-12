@@ -33,9 +33,9 @@ namespace EventCloud.Repository
             return await Throws<bool>(new NotImplementedException());
         }
 
-        public async Task<IList<Event>> GetByAsync()
+        public async Task<IList<Event>> GetByAsync(IList<Guid> eventIds)
         {
-            return await _context.Events.Find(_ => true).ToListAsync();
+            return await _context.Events.Find(e => eventIds.Contains(e.ExternalId)).ToListAsync();
         }
 
         /// <summary>

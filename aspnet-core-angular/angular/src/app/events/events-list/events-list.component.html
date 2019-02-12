@@ -3,7 +3,7 @@
 
         <div class="block-header row">
             <div class="col-md-6">
-                <event-search></event-search>
+                <event-search #eventSearch></event-search>
             </div>
             <div class="col-md-6 text-right">
                 
@@ -11,7 +11,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6" *ngFor="let event of events">
+            <div class="col-md-6" *ngFor="let event of searchComponent.events">
                 <div class="card">
                     <div [class]="event.isCancelled ? 'header bg-red' : 'header'">
                         <h2>
@@ -50,6 +50,8 @@
                 </div>
             </div>
         </div>
+
+        
     </div>
 </div>
 <create-event-modal #createEventModal (modalSave)="refresh()"></create-event-modal>

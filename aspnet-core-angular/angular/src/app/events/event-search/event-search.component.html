@@ -1,8 +1,10 @@
-<div class="input-group mb-3">
-    <input class="form-control" type="text" placeholder="Try &quot;Football&quot;" />
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" ng-click="search()">Search</button>
-    </div>
+<div class="input-group" [formGroup]='form'>
+    <input class="form-control" [ngClass]="{'loading': loading}" type="text" placeholder="Try &quot;Football&quot;" [(ngModel)]="data" formControlName="searchInput" />
+    <!-- <span class="input-group-btn">
+        <button class="form-control" type="button" (click)="search()">
+            <span>{{l('Search')}}</span>
+            Search
+        </button>
+    </span> -->
+    <!-- <h1 *ngIf="loading">Loading</h1> -->
 </div>
-
-

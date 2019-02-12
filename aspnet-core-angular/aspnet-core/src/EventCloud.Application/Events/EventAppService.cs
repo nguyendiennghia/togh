@@ -16,10 +16,13 @@ using IExtensionRepository = EventCloud.Repository.IEventRepository;
 using ExtEvent = EventCloud.Repository.Entity.Event;
 using ExtLocation = EventCloud.Repository.Entity.Location;
 using MongoDB.Bson;
+using Castle.Core;
+using EventCloud.Interceptor;
 
 namespace EventCloud.Events
 {
     [AbpAuthorize]
+    //[Interceptor(typeof(MongoEventInterceptor))]
     public class EventAppService : EventCloudAppServiceBase, IEventAppService
     {
         private readonly IEventManager _eventManager;
@@ -36,6 +39,7 @@ namespace EventCloud.Events
             _extension = extension;
         }
 
+        
         public async Task<ListResultDto<EventListDto>> GetListAsync(GetEventListInput input)
         {
             var events = await _eventRepository
@@ -46,10 +50,10 @@ namespace EventCloud.Events
                 .Take(64)
                 .ToListAsync();
 
-            var ext = await _extension.GetByAsync();
+            var exts = await _extension.GetByAsync(events.Select(e => e.Id).ToArray());
 
             // TODO: Merge
-            var dtos = events.MapTo<List<EventListDto>>();
+            //var dtos = events.MapTo<List<EventListDto>>();
             //var dtos = (from e in events
             //            select new
             //            {
@@ -62,9 +66,20 @@ namespace EventCloud.Events
             //            }).ToList().MapTo<List<EventListDto>>();
             //var dtos = (from e in events select e).ToList().MapTo<List<EventListDto>>();
 
+            //var dtos = (from evt in events.MapTo<List<EventListDto>>()
+            //            let ext = exts.FirstOrDefault(e => e.ExternalId == evt.Id)
+            //            let mod = evt.Location = ext.Location
+            //            select evt).ToList();
+            var dtos = events.MapTo<List<EventListDto>>().Select(dto => {
+                var loc = exts.FirstOrDefault(e => e.ExternalId == dto.Id);
+                dto.Location = loc?.Location;
+                return dto;
+            }).ToList();
+
             return new ListResultDto<EventListDto>(dtos);
         }
 
+        
         public async Task<EventDetailOutput> GetDetailAsync(EntityDto<Guid> input)
         {
             var @event = await _eventRepository
@@ -80,8 +95,10 @@ namespace EventCloud.Events
             }
 
             var output = @event.MapTo<EventDetailOutput>();
+
             var details = await _extension.GetByAsync(@event.Id);
             output.Location = details.Location.MapTo<CreateEventLocation>();
+
             return output;
         }
 

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
+import {HttpClientModule} from '@angular/common/http';
 
 import { ModalModule } from 'ngx-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -41,6 +42,7 @@ import { MapComponent } from './map/map.component';
 import { EventTileComponent } from './events/event-tile/event-tile.component';
 import { EventSearchComponent } from './events/event-search/event-search.component';
 import { EventsListComponent } from './events/events-list/events-list.component';
+import { EventService } from '@app/events/event-service.service';
 
 @NgModule({
     declarations: [
@@ -84,10 +86,12 @@ import { EventsListComponent } from './events/events-list/events-list.component'
         NgxPaginationModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyAuttoKc6zOBy-pt7xhl0rGWu5vh6PkD9Y'
-          })
+          }),
+        ReactiveFormsModule,
+        HttpClientModule
     ],
     providers: [
-
+        EventService
     ]
 })
 export class AppModule { }

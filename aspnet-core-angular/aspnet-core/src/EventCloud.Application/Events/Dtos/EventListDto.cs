@@ -18,5 +18,7 @@ namespace EventCloud.Events.Dtos
         public virtual int MaxRegistrationCount { get; protected set; }
 
         public int RegistrationsCount { get; set; }
+
+        public Repository.Entity.Location Location { get; set; }
     }
 }

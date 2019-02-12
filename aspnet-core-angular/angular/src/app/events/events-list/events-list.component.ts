@@ -1,6 +1,7 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, ViewChild } from '@angular/core';
 import {EventsComponentBase} from '../events.component';
 import { EventServiceProxy, EntityDtoOfGuid } from '@shared/service-proxies/service-proxies';
+import { EventSearchComponent } from '@app/events/event-search/event-search.component';
 
 @Component({
   selector: 'app-events-list',
@@ -8,6 +9,8 @@ import { EventServiceProxy, EntityDtoOfGuid } from '@shared/service-proxies/serv
   styleUrls: ['./events-list.component.scss']
 })
 export class EventsListComponent extends EventsComponentBase {
+
+  @ViewChild('eventSearch') searchComponent: EventSearchComponent;
 
   constructor(
     injector: Injector,
@@ -22,4 +25,11 @@ export class EventsListComponent extends EventsComponentBase {
   createEvent(): void {
     
   }
+
+  // public getDataPage(page: number): void {
+  //   // this.list(req, page, () => {
+  //   //     this.isTableLoading = false;
+  //   // });
+  //   this.events = this.searchComponent.events;
+  // }
 }
