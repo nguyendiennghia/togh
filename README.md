@@ -33,11 +33,11 @@ http://www.codeproject.com/Articles/1043326/A-Multi-Tenant-SaaS-Application-With
 https://www.codeproject.com/Articles/1231118/A-Multi-Tenant-SaaS-Application-With-ASP-NET-Core
 
 Installation
-1. npm install -g yarnpkg
+1. npm install -g yarn (make sure the latest yarnpkg)
 2. npm install -g typescript@latest
-3. delete node_modules(option)
-4. delete package-lock.json
+3. delete node_modules (optional, in case of yarn package trouble)
+4. delete package-lock.json (optional, in case of yarn package trouble by npm mess up)
 5. npm cache clean --force
 6. npm install typescript@latest
-7. yarn
-8. npm start
+8. yarn
+9. npm start
